@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { isNumber, isString, isObject } from 'util';
+import { getBootstrapListener } from '@angular/router/src/router_module';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,31 @@ export class DiscoService {
     return genero;
   }
 
+    /**
+   * Preenche o objeto com a lista de músicas do genero
+   * 
+   * @param genero O genero
+   */
+  preencherObjetoGenero(genero) {
+    if (genero) {
+      genero.musicas = this.listaDeMusicasDoGenero(genero);
+    }
+  }
+
+   /**
+   * Encontra e retorna a lista de músicas do genero
+   * 
+   * @param genero Identificador ou nome do genero
+   */
+  listaDeMusicasDoGenero(genero) {
+    let a = genero;
+    if (isNumber(a) || isString(a)) {
+      a = this.encontrarGenero(genero);
+    }
+    let lista = this.musicas.filter(musica => musica.idGenero == genero.id);
+    return lista;
+  }
+
   /**
    * Adicionar um artista na lista de artistas.
    * 
@@ -129,7 +155,9 @@ export class DiscoService {
       id: this.musicas.length + 1,
       titulo,
       idGenero: g.id,
-      artistas: listaArtistas
+      artistas: listaArtistas,
+      gostar: 0,
+      naoGostar:0
     };
     this.musicas.push(musica);
     return musica;
@@ -243,4 +271,40 @@ export class DiscoService {
     }
     return this.artistas;
   }
+
+   /**
+   * Aumenta o numero de "Likes" de uma musica
+   * 
+   * @param musica A música
+   */
+  gostarMusica(musica){
+    musica.gostar++;
+  }
+
+   /**
+   * Aumenta o numero de "Dislikes" de uma musica e decrementa o numero de "Likes"
+   * 
+   * @param musica A música
+   */
+  naoGostarMusica(musica){
+    musica.naoGostar++;
+    if(musica.gostar > 0){
+      musica.gostar--;
+    }
+  }
+
+  /**
+   * Lista musicas recomendadas para o usuario que der "like" na musica
+   * 
+   * @param musica A música
+   */
+  mostrarRecomendacoesArtista(musica){
+    let artista = musica.artista
+    let recomendacoes =  this.listaDeMusicasDoArtista(artista)
+    return recomendacoes
+  }
+
+
 }
+
+  

@@ -13,4 +13,13 @@
     &nbsp;
     {{musica.genero.nome}}
   </div>
+  <div>
+    <p>{{musica.gostar}}</p>
+    <button class="btn btn-success" (click)="this.disco.gostarMusica(musica)">Like</button>
+    <p>{{musica.naoGostar}}</p>
+    <button class="btn btn-danger" (click)="this.disco.naoGostarMusica(musica)">Dislike</button>
+  </div>
+  <div>
+    <p>Recomendações</p>
+  </div>
 </section>
