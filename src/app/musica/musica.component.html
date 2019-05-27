@@ -15,11 +15,28 @@
   </div>
   <div>
     <p>{{musica.gostar}}</p>
-    <button class="btn btn-success" (click)="this.disco.gostarMusica(musica)">Like</button>
+    <button class="btn btn-success" (click)="disco.gostarMusica(musica)">Like</button>
     <p>{{musica.naoGostar}}</p>
-    <button class="btn btn-danger" (click)="this.disco.naoGostarMusica(musica)">Dislike</button>
+    <button class="btn btn-danger" (click)="disco.naoGostarMusica(musica)">Dislike</button>
   </div>
-  <div>
-    <p>Recomendações</p>
+  <h2>Recomendações</h2>
+  <div *ngFor="let musicaRecomendadas of disco.listaDeMusicasDoGenero(musica.genero)">
+      <a [routerLink]="[ '/musicas', musica.id ]">
+        <strong>{{ musicaRecomendadas.titulo }} </strong> -
+        <span *ngFor="let artista of musica.artistas; last as ultimo">
+          {{ artista.nome }}<span *ngIf="!ultimo">, </span>
+        </span>
+      </a>
+  </div>
+  <div *ngFor="let artista of musica.artistas">
+    <div *ngFor="let musicaRecomendadaArtista of disco.listaDeMusicasDoArtista(artista)">
+        <a *ngIf="musica.titulo != musicaRecomendadaArtista.titulo" [routerLink]="[ '/musicas', musica.id ]">
+          <strong>{{ musicaRecomendadaArtista.titulo }} </strong> -
+          <span *ngFor="let artista of musica.artistas; last as ultimo">
+            {{ artista.nome }}<span *ngIf="!ultimo">, </span>
+          </span>
+        </a>
+    </div>
   </div>
 </section>
+

@@ -303,8 +303,7 @@ export class DiscoService {
     let recomendacoes =  this.listaDeMusicasDoArtista(artista)
     return recomendacoes
   }
-
-
+  
 }
 
   
